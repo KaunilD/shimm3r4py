@@ -25,6 +25,17 @@ def read_data(file_path):
     array = np.asarray(data_list, dtype=np.float32)
     return np.reshape(array, (len(data_list[0]), -1))
 
+def get_gsr(data, range_setting):
+    rf = [40200, 287000, 1000000, 3300000]
+    
+    rf = lambda b: range_setting/(((b*(3/4095))/0.5) -1)
+    
+    rows, cols = data.shape
+    data = np.apply_along_axis(rf, 1, data)
+
+    return data
+
+
 def butterworth_lowp(data, cutt_off, srate, order=2):
     nyq = 0.5 * srate 
     normal_cutoff = cut_off / nyq 
